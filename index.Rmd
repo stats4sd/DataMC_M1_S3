@@ -1,0 +1,27 @@
+---
+title: "Cleaning and Checking Data in R"
+output: 
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+    df_print: default
+runtime: shiny_prerendered
+description: >
+  Learn about the basics of cleaning and checking your data within R
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Installing R and RStudio
+
+On the course website you will find an online workbook that will cover some useful functions in R that will help if you are cleaning data in R
+This includes;
+Importing data
+Creating new variables
+Setting values for missing data / checking for missing data
+Checking for implausible values
+Correcting labels / values
+Sorting data
+Feel free to complete this workbook in your own time. It is not assessed
