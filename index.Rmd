@@ -14,14 +14,269 @@ description: >
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
+## Overview
+
+
 ## Installing R and RStudio
 
-On the course website you will find an online workbook that will cover some useful functions in R that will help if you are cleaning data in R
-This includes;
-Importing data
-Creating new variables
-Setting values for missing data / checking for missing data
-Checking for implausible values
-Correcting labels / values
-Sorting data
-Feel free to complete this workbook in your own time. It is not assessed
+Both R and RStudio are open source software tools, so these can be downloaded from the internet for free, forever. 
+
+Even if you have prior installations of R or RStudio on your computer - please ensure you download and install the most recent versions of both programs. R and RStudio are both updated on a very regular basis, and some of the features we may highlight in this course may not be available if you are using an older version. 
+
+<a href="http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-installing-r-and-RStudio" target="_blank">Video covering the installation process</a>
+
+The first thing to install is the most recent version of R for your operating system:
+<a href="https://cran.r-project.org/bin/windows/base/" target="_blank">Download R for Windows</a>
+
+<a href="https://cran.r-project.org/bin/macosx/" target="_blank">Download R for Mac</a>
+
+Once you have completed the installation of R you can download RStudio, the link below should provide the recommended link to download based on your operating system.
+<a href="https://RStudio.com/products/RStudio/download/#download" target="_blank">Download RStudio</a>
+
+You should not need to change any of the default settings as you work through the installation process. If you are having any issues with the downloading and installation process please make sure that you have administrator rights on the computer you are working on. Please remember that you can use the help forum at any time if you are struggling with these steps.
+
+## Tidyverse
+
+A big advantage of R is that it is open source.Therefore the packages which people have designed to accomplish certain tasks are freely available for anyone to download and learn how to use.
+
+In recent years, there is a curated collection of packages which has become immensely popular.The tidyverse. This is a range of packages quite closely linked to this established concept of "Tidy data" as developed by Hadley Wickham. In fact he literally wrote the <a href="https://r4ds.had.co.nz/" target="_blank">book on the subject</a>
+
+The tidyverese contains a wide array of packages with different purposes, but the general philosophy is keeping your data and your code clean, readable and easy to understand.
+
+For our purposes during this module of the course, our main 2 packages will be Dplyr and Tidyr. If you took Stats4SD's previous introduction to R you may be somewhat familiar with these packages already. 
+
+```{r echo=FALSE, out.width="80%", fig.align='left'}
+#knitr::include_graphics("./images/dplyr.png") # TO ADD
+```
+
+Dplyr is primarily concerned with data manipulation, from this package we will be looking into how to create new variables but also edit existing ones.In a later session we will also look at merging data. For more information on this package [vistit this page](https://dplyr.tidyverse.org/)
+
+```{r echo=FALSE, out.width="80%", fig.align='left'}
+#knitr::include_graphics("./images/rmarkdown.PNG")
+```
+
+Tidyr on the other hand is about some of the primary rules about Tidy data as the name implies. This includes functions to reshape your data and dealing with some missing values. These will be our primary focus from this package but it does have other capabilities as well. [](https://tidyr.tidyverse.org/) 
+
+The easiest way to install these packages to your version of R would be to run the following code.
+
+```{r installtidyverse,exercise=FALSE, echo=FALSE, include=FALSE}
+install.packages("tidyverse")
+
+#Remember that you need to load packages to use them
+library(tidyverse)
+```
+
+## Dataset
+
+For the purpose of this session workbook I have generated a small fake dataset that we can use to explore some of the basic tips for cleaning your data in R.
+
+```{r data_generation, include=FALSE}
+data1 <- data.frame(
+  index = 1:10,
+  plot_num = c(1,2,4,3,1,3,4,NA,5,5),
+  plant = c("Sorghum","sorg","Sorghum", "Maize","M","Maize", "Sorghum","sorg","M","M"),
+  fertilised = c(0,1,1,0,1,-99,1,0,0,0),
+  height = c(10,12,8,15,12,13,7,88,10,11),
+  n_pests = sample(1:40,10)
+)
+```
+
+```{r,echo=FALSE}
+knitr::kable(data1)
+```
+
+You can probably already see looking at this small rectangle of data that there are few issues here to deal with. THough this data is tidy as we have one row per observation, one column per variable and each cell is a single value. But it is not clean, we see missing data, possible wrong values, and a mess of a plant name column.
+
+## Creating new variables
+
+Creating a new variable is something you are almost always going to do whether you are cleaning data or doing an analysis.
+
+In R there are 2 basic ways of generating new variables. The base R way and the dplyr way.
+
+For the case of this demonstration we are going to calculate a variable indicating the extent of the infestation of pests on the plant. This being number of pests / height of the plant. So number of pests per inch of the plant's height.
+
+### Assign Operator
+
+Base R is the basic version of R that comes when you just install R and does not require any packages. It is how R usually operates.
+
+When we want to crate a new variable using base R we have to use something which is colloquially known as the assign operator. `<-` it is a less than symbol and a hyphen, to make a left pointing looking arrow. This will be familiar to any R user as it is how a lot of things get done. it is how we save things
+
+So to generate this new variable using base R we could write something like this
+
+```{r assign, exercise = FALSE}
+data1$pests_per_inch <- data1$n_pests/data1$height
+```
+
+Remember you will not see any output as you are saving that to a new column in your dataset. But we can just type in that column and take a look.
+
+```{r}
+data1$pests_per_inch
+```
+
+### Mutate function
+
+The mutate function comes from the dplyr package and is used to generate new variables. It behaves like many of the tidyverse functions in that the first argument will be the dataset.
+
+For a brief tutorial please watch this video.
+
+![](https://www.youtube.com/watch?v=k4Tq0hFtFno)
+
+In the mutate function you supply the column name as a string of text in quotation marks. Then type in how this variable is to be calculated. Remember however that you still need to use the assign operator as you are making edits to the dataset that you will want to save.
+
+```{r mutate,exercise = FALSE}
+data1 <- mutate(.data = data1,"pests_per_inch" = n_pests/height)
+```
+
+For a basic example such as this the base R way perhaps makes the most sense. The advantages of mutates comes from when you want to chain some edits together, using the pipe operator `%>%`, a slightly more advanced data manipulation technique that you may be familiar with from our previous R course.
+
+As a brief introduction, the pipe operator allows you to feed data between subsequent data manipulation, reshaping or even plotting functions.It does this by using the pipe to note that the data argument should take the result of the previous step.
+
+For instance in our case we could write the creation of the column like this instead. 
+
+```{r mutate2, exercise = FALSE}
+data1 <- data1%>%
+  mutate("pests_per_inch" = n_pests/height)
+```
+
+Because we have used the pipe following `data1` we do not need to specify it as our first argument in the mutate. For more information on the pipe operator please follow this [link]()# find a link
+
+Both mutate and the assign can be used to edit existing columns as well, not just make new ones.
+
+But also mutate allows us to create multiple columns at once. We can just keep listing new columns together for our code to create,
+rather than doing them separately. For instance lets create a column converting height in inches to height in cm by multiplying it by 2.54.
+
+```{r mutate3, exercise = FALSE}
+data1 <-data1%>%
+  mutate("pests_per_inch" = n_pests/height,
+         "height_cm" = height*2.54)
+```
+
+Finally, beyond the scope today, but dplyr comes with other functions such as `mutate_at()`, `mutate_if()` and `mutate_all()` to allow you to perform the same operation to multiple or even all your columns. So there is a lot of variability in what mutate can achieve.
+
+## Missing Data
+
+If you know that your missing data has already been coded in a certain way such as a text sting of for example "na" or something numeric like -8 or -9. Then a quick way of establishing to R that this means that the data is missing can be accomplished through  your data import, especially when working with a csv or excel workbook. This is because the functions for reading in that type of data come with an argument to specify the codes used for missing data.
+
+R deals with missing data in quite a particular way, you need to tell it what is missing in most cases. If you have just left cells blank where there is missing data then this is usually fine as R will understand that this is missing data. It wont automatically understand "na" or -9 as meaning data is missing.It will read that verbatim as what the value is.
+
+In the example below we have told R that cells in our csv that are one of these 3 values are missing data.
+
+```{r, eval=FALSE}
+data1 <- read.csv("data.csv", na.strings = c("na", -9, -8))
+```
+
+If you were to do something like this with your data you would notice that those -8s and -9s have become `NA` instead. This is because R will not keep these missing codes but use its own internal character to mean missing. R will only recognise missing data if it takes the value of `NA` a special value in R to denote missing data. Note that `NA` and `"NA"` are not the same, the former is a special logical value in R and the other is a character string so again R would read `"NA"` as a literal character string.
+
+If your data has already been properly coded and is clean then this should theoretically be all you need to do with missing data but there are a few things you can do if this is not the case.
+
+### Using summary and table 
+
+Depending on the state of your missing data, there are 2 key ways we can check individual variables for missing data.
+
+If your missing data is already coded as `NA` within R, i.e. R understands it is missing. We can use `summary` to look at some key summary statistics of that variable. This includes telling you how many are `NA`
+
+```{r missing1, exercise = FALSE}
+summary(data1$germination)
+```
+
+Now we don't see a summary of missing data for this column because there wasn't any. Let's look at plot number instead
+
+```{r missing2, exercise = FALSE}
+summary(data1$plot_num)
+```
+
+Ah this time we get another value telling us the number of `NA` values in our column. This being 1. If we take another look at our data we can see by looking at plot number we have only 1 plant attached to plot 2 but 2 plants for the other 4 plots. In this basic example we can make the assumption that plant 8 should belong to plot 2 so we can simply overwrite this value with what it should be.
+
+```{r,echo=FALSE}
+knitr::kable(data1)
+```
+
+Other examples may not be so straightforward, if you find some missing data that is unexpected that you may need to either look at the questionnaire or data dictionary to understand the skip patterns to find if it was simply irrelevant and therefore should be missing for this observation. Or you may need to look back at an earlier version of the data to see if there was a missing data code which is not shown because of how R deals with missing data. Of course a lot of the time, missing data is truly missing and nothing needs to be done.
+
+Alternatively, if your `NA` values have not yet been established but you have known missing data codes you could use `table` to look at how many observations in a variable are using one of these codes. Now in our data we have used `-99` to mean missing in our fertilised variable. So lets have a look at that variable using `table` 
+
+```{r}
+table(data1$fertilised)
+```
+Again we have one missing observation according to these codes. Now we could follow up on why this is missing as it feels as if it shouldn't. But for our purposes here lets assume this is unfortunately truly missing data and we don't know the true answer.
+
+### Setting values to NA and replacing NA values
+
+Now there are many many ways you can change a value in R. Some we will get onto later in this workbook. But for now lets focus on some ways that specifically deal with missing values.
+
+Firstly, lets fix plot number. Now there are a few great ways to replace missing data with a new value. If you are editing an exiting column you do need to put quotation marks around its name.
+
+The first of these works specifically in our case because we only need to fix one value. So what we can do is use assign to save a change to this cell. Now to do this we need to specify exactly what cell we are looking at, we thankfully have a small piece of data so we can see easily it is row 8. Similar to when we made a new variable we write out the column but after it we put the row number in square brackets. This means row 8 of column `plot_num`. And then we can assign it to be the number 2
+
+```{r, eval=FALSE}
+data1$plot_num[8] <- 2
+```
+
+This is mainly useful when the number of changes you are making are quite small and targeted.
+
+If you are making lots of the same change, an alternative would be to replace the row number with `is.na(data$column_name)` this will tell R that in the rows of this column where this is missing data, replace it with this value instead. So the could would look like this. 
+
+```{r, eval=FALSE}
+data1$plot_num[is.na(data1$plot_num)] <- 2
+```
+
+`is.na` is a function that tests whether or not a particular observation is equal to `NA`.
+
+The tidyverse offers another alternative that can be used with the mutate function. This is the `replace_na` function. This replaces a missing value with a specified value. Here i need to first specify the column I am working on and then the new value it should take. Again this is best used when all that missing data should now take the same value. If they need to be different then you will need a more targeted method that may be a little more manual. Such as the first option on this page.
+
+```{r,exercise =FALSE}
+data1 <- data1%>%
+  mutate(plot_num = replace_na(plot_num,2))
+```
+
+Now there are a few options for doing the reverse.
+
+We can modify the first 2 bits of code and use the same method for instance but sort of reverse the function as it were.
+
+```{r, exercise =FALSE,eval=FALSE}
+data1$fertilised[6] <- NA
+```
+
+or
+
+```{r, exercise = FALSE,eval=FALSE}
+data1$fertilised[data1$fertilised==-99] <- NA
+```
+
+Here the `==` operator is used to tell R to look for the rows where fertilised is equal to -9. We use `==` rather than `=` because one equals sign tells R a value is x, while two equals signs asks R if a value is x. The first is an assignment of a value, the second is a logical test.
+
+Again the dplyr version for doing this is available and it is `na_if`. The syntax is exactly the same except we are giving the value that we want to become `NA` rather than the new value `NA` should become.
+
+```{r,exercise = FALSE}
+data1 <- data1%>%
+  mutate(fertilised = na_if(fertilised, -99))
+```
+
+If your missing codes are consistent you can of course use `mutate_all` instead to edit all your columns at once rather than one by one. Note that for `mutate_all` you specify your arguments slightly differently. Therefore I recommend looking into the help page for this function as it is not always straight forward.
+
+In this case our arguments are actually the name of the function, and then the missing code value. This will be applied to every column. Therefore you may need be a little creative if your missing codes are different across columns.
+
+```{r,exercise = FALSE}
+data1 <- data1%>%
+  mutate_all(na_if, -99)
+```
+
+
+## Checking for implausible values
+
+use summary
+use table - categorical or use unique - where codes may differ
+
+## Correcting labels / values
+
+ifelse
+case_when
+
+## Sorting data
+
+arrange
+
+## Subsetting data
+
+filter
