@@ -62,13 +62,13 @@ The tidyverese contains a wide array of packages with different purposes, but th
 For our purposes during this module of the course, our main 2 packages will be Dplyr and Tidyr. If you took Stats4SD's previous introduction to R you may be somewhat familiar with these packages already. 
 
 ```{r echo=FALSE, out.width="20%", fig.align='left'}
-knitr::include_graphics("./images/dplyr.PNG") # TO ADD
+knitr::include_graphics("./images/dplyr.png") # TO ADD
 ```
 
 Dplyr is primarily concerned with data manipulation, from this package we will be looking into how to create new variables but also edit existing ones.In a later session we will also look at merging data. For more information on this package [vistit this page](https://dplyr.tidyverse.org/)
 
 ```{r echo=FALSE, out.width="20%", fig.align='left'}
-knitr::include_graphics("./images/tidyr.PNG")
+knitr::include_graphics("./images/tidyr.png")
 ```
 
 Tidyr on the other hand is about some of the primary rules about Tidy data as the name implies. This includes functions to reshape your data and dealing with some missing values. These will be our primary focus from this package but it does have other capabilities as well. [Visit this page for more information](https://tidyr.tidyverse.org/) 
