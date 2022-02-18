@@ -17,6 +17,21 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Overview
 
+Welcome to this first workbook in the R for Data Management Module.
+
+During these workbooks you will not need to be writing any of your own R code but will see examples of code that should help you in your own projects.
+
+This first workbook will look at some code you can use to check and clean your data in R.
+
+This covers
+
+*   Creating new variables
+*   Dealing with missing data
+*   Checking values
+*   Recoding and changing values
+*   Sorting data
+*   Subsetting data
+
 
 ## Installing R and RStudio
 
@@ -46,17 +61,17 @@ The tidyverese contains a wide array of packages with different purposes, but th
 
 For our purposes during this module of the course, our main 2 packages will be Dplyr and Tidyr. If you took Stats4SD's previous introduction to R you may be somewhat familiar with these packages already. 
 
-```{r echo=FALSE, out.width="80%", fig.align='left'}
-#knitr::include_graphics("./images/dplyr.png") # TO ADD
+```{r echo=FALSE, out.width="20%", fig.align='left'}
+knitr::include_graphics("./images/dplyr.PNG") # TO ADD
 ```
 
 Dplyr is primarily concerned with data manipulation, from this package we will be looking into how to create new variables but also edit existing ones.In a later session we will also look at merging data. For more information on this package [vistit this page](https://dplyr.tidyverse.org/)
 
-```{r echo=FALSE, out.width="80%", fig.align='left'}
-#knitr::include_graphics("./images/rmarkdown.PNG")
+```{r echo=FALSE, out.width="20%", fig.align='left'}
+knitr::include_graphics("./images/tidyr.PNG")
 ```
 
-Tidyr on the other hand is about some of the primary rules about Tidy data as the name implies. This includes functions to reshape your data and dealing with some missing values. These will be our primary focus from this package but it does have other capabilities as well. [](https://tidyr.tidyverse.org/) 
+Tidyr on the other hand is about some of the primary rules about Tidy data as the name implies. This includes functions to reshape your data and dealing with some missing values. These will be our primary focus from this package but it does have other capabilities as well. [Visit this page for more information](https://tidyr.tidyverse.org/) 
 
 The easiest way to install these packages to your version of R would be to run the following code.
 
@@ -110,7 +125,7 @@ data1$pests_per_inch <- data1$n_pests/data1$height
 
 Remember you will not see any output as you are saving that to a new column in your dataset. But we can just type in that column and take a look.
 
-```{r}
+```{r, exercise = FALSE}
 data1$pests_per_inch
 ```
 
@@ -139,7 +154,7 @@ data1 <- data1%>%
   mutate("pests_per_inch" = n_pests/height)
 ```
 
-Because we have used the pipe following `data1` we do not need to specify it as our first argument in the mutate. For more information on the pipe operator please follow this [link]()# find a link
+Because we have used the pipe following `data1` we do not need to specify it as our first argument in the mutate. For more information on the pipe operator please follow this [link](https://www.datacamp.com/community/tutorials/pipe-r-tutorial)
 
 Both mutate and the assign can be used to edit existing columns as well, not just make new ones.
 
@@ -196,7 +211,7 @@ Other examples may not be so straightforward, if you find some missing data that
 
 Alternatively, if your `NA` values have not yet been established but you have known missing data codes you could use `table` to look at how many observations in a variable are using one of these codes. Now in our data we have used `-99` to mean missing in our fertilised variable. So lets have a look at that variable using `table` 
 
-```{r}
+```{r, exercise = FALSE}
 table(data1$fertilised)
 ```
 Again we have one missing observation according to these codes. Now we could follow up on why this is missing as it feels as if it shouldn't. But for our purposes here lets assume this is unfortunately truly missing data and we don't know the true answer.
@@ -265,18 +280,171 @@ data1 <- data1%>%
 
 ## Checking for implausible values
 
-use summary
-use table - categorical or use unique - where codes may differ
+Now unless your data collection and management has been 100% robust with absolutely no room for errors at all, you will more than likely come across the odd value that doesn't quite seem right. A value that looks implausible, a bit like an extreme outlier.
+
+It can be quite easy for these types of errors to occur. They are typically data entry errors, where a value has been incorrectly inputted for whatever reason.
+
+We can use the same methods we used to detect missing data to seek out these potential errors. Sometimes it is quite common for these errors to go unnoticed until they cause an issue in your analysis. So seeking them out early in your data cleaning process could save time later down the line. 
+
+For instance, lets use summary to look at our number of insects variable.         
+
+```{r, exercise = FALSE}
+summary(data1$n_pests)
+```
+A minimum of `r min(data1$n_pests)` and maximum of `r max(data1$n_pests)`, seems like a little bit of maybe large range.
+
+Maybe we should look at this variable graphically to see if this seems a little out of place.
+
+Ordinarily we would recommend using the tidyverse package ggplot2 for plotting your data, and we certainly recommend you do look at this package on your own time if you want to learn more, but for the sake of ease we will just quickly use the base plotting function `hist` to take a quick look. GGplot2 offers a lot more flexibility in plotting your data and creates a more visually appealing graph.
+For Stats4SD's previous videos on this package, please follow this [link](https://www.youtube.com/watch?v=lbt4BH9Q82E&list=PLK5PktXR1tmM_ISpxwoiXD2SioG3MWNqg)
+
+```{r, exercise = FALSE}
+hist(data1$n_pests)
+```
+Seems like based on this plot there is nothing really standing out as implausible. So i think this variable is fine.
+
+Let's instead look to height of the plant
+
+```{r, exercise = FALSE}
+summary(data1$height)
+```
+Now that is a significant gap in our range. 7 to 88 Inches. Moreover our maximum is 88 while our 75th percentile is only 12.75. That certainty doesn't seem correct.
+
+Let's look at the plot just to be sure
+
+```{r, exercise = FALSE}
+hist(data1$height)
+```
+Without a doubt this value of 88 is far too high to be correct. There are 2 possible reasons for this data entry error i think. 1 possibility is that this value is meant to be 8 and the enumerator accidentally put 88 instead. Or perhaps a number like 88 was meant to be a missing code and this was incorrectly entered. In a case like this, it would probably be best to contact either the data manager for any insight, or the enumerator who collected data for this particular observation.
+
+For our case let's assume the first option is true. Sometimes if there is not a concrete explanation you may have to use a bit of your best judgement to decide what to do about this sort of error. Whether it is changing it to a specific value or changing this data to be missing.
+
+We will see on the next page how we could go about changing this value.
+
+The above tips work best when dealing with a numeric variable. If you are dealing with something more categorical i would recommend either using `table` again or perhaps `unique`. This function will display a list of all the unique values in a column, whether it is numeric, categorical, a date. Any variable type will work
+
+```{r, exercise = FALSE}
+unique(data1$plant)
+```
+Here we can see that there is an issue with our plant variable. Seems the labels were not standardised. We should fix that. 
 
 ## Correcting labels / values
 
-ifelse
-case_when
+On the previous page we saw another 2 important issues in our data
+
+First, we have a data entry error in our height variable.
+
+Secondly, our plant name variable must have been open text as our labels are not standardised.
+
+To fix either of these issues we could use some methods we have already seen in regards to missing data, but I want to introduce a couple key functions that can be very useful in recoding your data.`ifelse` and `case_when`
+
+`ifelse` works very much the same way IF() works in Excel.You provide a condition, a value for if that condition is true and a value for if that condition is false.
+
+Let's use this function to correct our height variable. Again we can edit existing variables using mutate.
+
+```{r, exercise = FALSE}
+data1 <- data1%>%
+  mutate(height = ifelse(height==88,8,height))
+```
+
+In this case we want to change the value if it is equal to 88, and we want it changed to just 8 instead. If height is not 88 then we want it to stay the same. `Ifelse` can be a very useful function for fixing mistakes and generating new variables for analysis.
+
+`case_when` works in a similar way as it is about recoding variables.Particularly it is for generating new or editing existing categorical variables.
+
+Again you provide a condition and a value for if that condition is true, however after each comma you provide a new condition and value. Some of you may be familiar with similar functions in STATA or SPSS. Note that the condition and value is separated by a tilde `~`. This is R notation to denote a formula. You may be familiar with it if you have done any statistical modelling in R before.
+
+In the code below we want to change "Sorghum" and "sorg" to both be "Sorghum". We use this `%in%` operator to tell R to look to see if the value in the cell matches one of the values in a list that we then provide in the `c()` or combine function. So R will look for where plant is either "Sorghum" or "sorg". Then after the tilde we provide that new value we want it to be. We do the same for Maize. If there are any values not covered by your conditions in using case_when, it will be assumed by R that you want these to be NA. So always check that you are thorough in your code.
+
+```{r, exercise = FALSE}
+data1 <- data1%>%
+  mutate(plant = case_when(
+    plant %in% c("Sorghum", "sorg") ~ "Sorghum",
+    plant %in% c("Maize", "M") ~ "Maize"
+  ))
+```
+
+Now we need to make an important point about the order of your code in R. If you remember earlier we created a height in cm variable from our height in inches variable. However we now have changed one of those inch values. So if we look at height in cm, there is still an implausible value.
+
+```{r, exercise = FALSE}
+summary(data1$height_cm)
+```
+We could fix this directly but the easiest thing to do now would be to recalculate that height in cm variable.
+
+```{r mutate_redo, exercise = FALSE}
+data1 <-data1%>%
+  mutate("pests_per_inch" = n_pests/height,
+         "height_cm" = height*2.54)
+```
+
+However, the better thing to do would be to make sure you do any and all of your analysis and cleaning in a logical and sequential order to avoid having to go backwards as it is very easy for errors to go unfound until later down the line. This is something we want to avoid. Therefore, we would advise focusing on missing and implausible data as your first steps in cleaning data in R before going onto generating any new variables.
 
 ## Sorting data
 
-arrange
+Finally we will have a quick look at a couple quick data management tips you may find useful.
+
+Firstly, while not always necessary, you may find it useful to sort your data based on a variable other than a unique identifier.
+
+In which case we can use the `arrange` function. This sorts your data based on one or more variables which you supply as arguments. by default it will do this ascendingly but if you wish to do the opposite you can type the variable into the `desc` function first.
+
+For instance lets sort on plot number
+
+```{r, exercise = FALSE}
+data1 <-data1%>%
+  arrange(plot_num)
+
+data1
+```
+
+Or in descending order
+
+```{r, exercise = FALSE}
+data1 <-data1%>%
+  arrange(desc(plot_num))
+
+data1
+```
+
+Or lets even order it on both plant first and then plot number
+
+```{r, exercise = FALSE}
+data1 <-data1%>%
+  arrange(plant,plot_num)
+
+data1
+```
+
 
 ## Subsetting data
 
-filter
+Finally, something you may often wish to do is to subset your data. There can be many reasons for this, including an analysis that is only applicable to certain groups. Sometimes you may wish to do this subsetting early in your data cleaning process so that you have these subsets readily available. 
+
+With dplyr there is a simple function provided to do this. `filter` does exactly what you expect it to, filter the data based on some condition you provide.
+
+For example let's create a subset of our data that is just Maize plants.
+
+```{r, exercise = FALSE}
+maize_data <- data1%>%
+  filter(plant == "Maize")
+```
+
+We can provide multiple arguments to filter our data. We can separate them using `&` to mean AND, or we can use `|` to mean OR.
+
+## External Links and Resources
+
+<a href="https://r4ds.had.co.nz/" target="_blank">R for data science book : Covers a lot of the key areas of the tidyvesrse packages for data cleaning and manipulation</a>
+
+[Course of Introductory R Videos](http://milton-the-cat.rocks/learnr/r/r_getting_started/#section-overview)
+
+[Quick-R tutorial on some base R data managment mehods](https://www.statmethods.net/management/index.html)
+
+[Stats4SD course videos on data management and analysis](https://www.youtube.com/playlist?list=PLK5PktXR1tmM_ISpxwoiXD2SioG3MWNqg) 
+
+[Stats4SD course video on tidy data and importing data to R](https://www.youtube.com/watch?v=truh-B_S-v4)
+
+[Blog post](https://www.datakind.org/blog/whats-in-a-table)
+
+[Article](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html)
+
+[Blog post 2](https://towardsdatascience.com/what-is-tidy-data-d58bb9ad2458)
+
+[R for data science: Chapter on Tidy Data](https://r4ds.had.co.nz/tidy-data.html)
