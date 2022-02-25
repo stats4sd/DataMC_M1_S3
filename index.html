@@ -146,12 +146,29 @@ $(document).ready(function () {
 <p>A big advantage of R is that it is open source.Therefore the packages which people have designed to accomplish certain tasks are freely available for anyone to download and learn how to use.</p>
 <p>In recent years, there is a curated collection of packages which has become immensely popular.The tidyverse. This is a range of packages quite closely linked to this established concept of “Tidy data” as developed by Hadley Wickham. In fact he literally wrote the <a href="https://r4ds.had.co.nz/" target="_blank">book on the subject</a></p>
 <p>The tidyverese contains a wide array of packages with different purposes, but the general philosophy is keeping your data and your code clean, readable and easy to understand.</p>
-<p>For our purposes during this module of the course, our main 2 packages will be Dplyr and Tidyr. If you took Stats4SD’s previous introduction to R you may be somewhat familiar with these packages already.</p>
+<p>For our purposes during this module of the course, our main 2 packages will be Dplyr and Tidyr. If you took Stats4SD’s course ‘Introduction to R’, you may be somewhat familiar with these packages already.</p>
 <p><img src="images/dplyr.png" width="20%" style="display: block; margin: auto auto auto 0;" /></p>
-<p>Dplyr is primarily concerned with data manipulation, from this package we will be looking into how to create new variables but also edit existing ones.In a later session we will also look at merging data. For more information on this package <a href="https://dplyr.tidyverse.org/">vistit this page</a></p>
+<p>Dplyr is primarily concerned with data manipulation, from this package we will be looking into how to create new variables but also edit existing ones.In a later session we will also look at merging data. For more information on this package <a href="https://dplyr.tidyverse.org/">visit this page</a></p>
 <p><img src="images/tidyr.png" width="20%" style="display: block; margin: auto auto auto 0;" /></p>
-<p>Tidyr on the other hand is about some of the primary rules about Tidy data as the name implies. This includes functions to reshape your data and dealing with some missing values. These will be our primary focus from this package but it does have other capabilities as well. <a href="https://tidyr.tidyverse.org/">Visit this page for more information</a></p>
+<p>Tidyr on the other hand is about some of the primary rules about Tidy data as the name implies. This includes functions to reshape your data and deal with some missing values. These will be our primary focus from this package but it does have other capabilities as well. <a href="https://tidyr.tidyverse.org/">Visit this page for more information</a></p>
 <p>The easiest way to install these packages to your version of R would be to run the following code.</p>
+<pre class="r"><code>install.packages(&quot;tidyverse&quot;)</code></pre>
+<pre><code>## Installing tidyverse [1.3.1] ...
+##  OK [linked cache]</code></pre>
+<pre class="r"><code>#Remember that you need to load packages to use them
+library(tidyverse)</code></pre>
+<pre><code>## Warning: package &#39;tidyverse&#39; was built under R version 4.0.5</code></pre>
+<pre><code>## -- Attaching packages --------------------------------------- tidyverse 1.3.1 --</code></pre>
+<pre><code>## v ggplot2 3.3.5     v purrr   0.3.4
+## v tibble  3.1.6     v dplyr   1.0.8
+## v tidyr   1.2.0     v stringr 1.4.0
+## v readr   2.1.2     v forcats 0.5.1</code></pre>
+<pre><code>## Warning: package &#39;tidyr&#39; was built under R version 4.0.5</code></pre>
+<pre><code>## Warning: package &#39;readr&#39; was built under R version 4.0.5</code></pre>
+<pre><code>## Warning: package &#39;dplyr&#39; was built under R version 4.0.5</code></pre>
+<pre><code>## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
 </div>
 <div id="section-dataset" class="section level2">
 <h2>Dataset</h2>
@@ -174,7 +191,7 @@ $(document).ready(function () {
 <td align="left">Sorghum</td>
 <td align="right">0</td>
 <td align="right">10</td>
-<td align="right">19</td>
+<td align="right">24</td>
 </tr>
 <tr class="even">
 <td align="right">2</td>
@@ -182,7 +199,7 @@ $(document).ready(function () {
 <td align="left">sorg</td>
 <td align="right">1</td>
 <td align="right">12</td>
-<td align="right">25</td>
+<td align="right">28</td>
 </tr>
 <tr class="odd">
 <td align="right">3</td>
@@ -190,7 +207,7 @@ $(document).ready(function () {
 <td align="left">Sorghum</td>
 <td align="right">1</td>
 <td align="right">8</td>
-<td align="right">3</td>
+<td align="right">7</td>
 </tr>
 <tr class="even">
 <td align="right">4</td>
@@ -198,7 +215,7 @@ $(document).ready(function () {
 <td align="left">Maize</td>
 <td align="right">0</td>
 <td align="right">15</td>
-<td align="right">17</td>
+<td align="right">12</td>
 </tr>
 <tr class="odd">
 <td align="right">5</td>
@@ -206,7 +223,7 @@ $(document).ready(function () {
 <td align="left">M</td>
 <td align="right">1</td>
 <td align="right">12</td>
-<td align="right">27</td>
+<td align="right">36</td>
 </tr>
 <tr class="even">
 <td align="right">6</td>
@@ -214,7 +231,7 @@ $(document).ready(function () {
 <td align="left">Maize</td>
 <td align="right">-99</td>
 <td align="right">13</td>
-<td align="right">7</td>
+<td align="right">6</td>
 </tr>
 <tr class="odd">
 <td align="right">7</td>
@@ -222,7 +239,7 @@ $(document).ready(function () {
 <td align="left">Sorghum</td>
 <td align="right">1</td>
 <td align="right">7</td>
-<td align="right">28</td>
+<td align="right">3</td>
 </tr>
 <tr class="even">
 <td align="right">8</td>
@@ -230,7 +247,7 @@ $(document).ready(function () {
 <td align="left">sorg</td>
 <td align="right">0</td>
 <td align="right">88</td>
-<td align="right">16</td>
+<td align="right">38</td>
 </tr>
 <tr class="odd">
 <td align="right">9</td>
@@ -238,7 +255,7 @@ $(document).ready(function () {
 <td align="left">M</td>
 <td align="right">0</td>
 <td align="right">10</td>
-<td align="right">2</td>
+<td align="right">27</td>
 </tr>
 <tr class="even">
 <td align="right">10</td>
@@ -246,11 +263,11 @@ $(document).ready(function () {
 <td align="left">M</td>
 <td align="right">0</td>
 <td align="right">11</td>
-<td align="right">1</td>
+<td align="right">15</td>
 </tr>
 </tbody>
 </table>
-<p>You can probably already see looking at this small rectangle of data that there are few issues here to deal with. THough this data is tidy as we have one row per observation, one column per variable and each cell is a single value. But it is not clean, we see missing data, possible wrong values, and a mess of a plant name column.</p>
+<p>You can probably already see looking at this small rectangle of data that there are few issues here to deal with. This data is tidy in terms of having one row per observation, one column per variable and each cell is a single value. However, it is not clean. We have missing data, possible incorrect values, and inconsistent text formatting in the plant column.</p>
 </div>
 <div id="section-creating-new-variables" class="section level2">
 <h2>Creating new variables</h2>
@@ -260,13 +277,13 @@ $(document).ready(function () {
 <div id="section-assign-operator" class="section level3">
 <h3>Assign Operator</h3>
 <p>Base R is the basic version of R that comes when you just install R and does not require any packages. It is how R usually operates.</p>
-<p>When we want to crate a new variable using base R we have to use something which is colloquially known as the assign operator. <code>&lt;-</code> it is a less than symbol and a hyphen, to make a left pointing looking arrow. This will be familiar to any R user as it is how a lot of things get done. it is how we save things</p>
+<p>When we want to crate a new variable using base R we have to use something which is colloquially known as the assign operator. <code>&lt;-</code> it is a less than symbol and a hyphen, to make a left pointing looking arrow. This will be familiar to any R user as it is how we save things</p>
 <p>So to generate this new variable using base R we could write something like this</p>
 <pre class="r"><code>data1$pests_per_inch &lt;- data1$n_pests/data1$height</code></pre>
-<p>Remember you will not see any output as you are saving that to a new column in your dataset. But we can just type in that column and take a look.</p>
+<p>Remember you will not see any output as you are saving that to a new column in your dataset, type in that column to take a look.</p>
 <pre class="r"><code>data1$pests_per_inch</code></pre>
-<pre><code>##  [1] 1.90000000 2.08333333 0.37500000 1.13333333 2.25000000 0.53846154
-##  [7] 4.00000000 0.18181818 0.20000000 0.09090909</code></pre>
+<pre><code>##  [1] 2.4000000 2.3333333 0.8750000 0.8000000 3.0000000 0.4615385 0.4285714
+##  [8] 0.4318182 2.7000000 1.3636364</code></pre>
 </div>
 <div id="section-mutate-function" class="section level3">
 <h3>Mutate function</h3>
@@ -277,22 +294,22 @@ $(document).ready(function () {
 <pre class="r"><code>data1 &lt;- mutate(.data = data1,&quot;pests_per_inch&quot; = n_pests/height)</code></pre>
 <p>For a basic example such as this the base R way perhaps makes the most sense. The advantages of mutates comes from when you want to chain some edits together, using the pipe operator <code>%&gt;%</code>, a slightly more advanced data manipulation technique that you may be familiar with from our previous R course.</p>
 <p>As a brief introduction, the pipe operator allows you to feed data between subsequent data manipulation, reshaping or even plotting functions.It does this by using the pipe to note that the data argument should take the result of the previous step.</p>
-<p>For instance in our case we could write the creation of the column like this instead.</p>
+<p>Using the pipe we can also create a column like this</p>
 <pre class="r"><code>data1 &lt;- data1%&gt;%
   mutate(&quot;pests_per_inch&quot; = n_pests/height)</code></pre>
-<p>Because we have used the pipe following <code>data1</code> we do not need to specify it as our first argument in the mutate. For more information on the pipe operator please follow this <a href="https://www.datacamp.com/community/tutorials/pipe-r-tutorial">link</a></p>
+<p>Because we have used the pipe after <code>data1</code> we do not need to specify it as our first argument in the mutate. For more information on the pipe operator please follow this <a href="https://www.datacamp.com/community/tutorials/pipe-r-tutorial">link</a></p>
 <p>Both mutate and the assign can be used to edit existing columns as well, not just make new ones.</p>
-<p>But also mutate allows us to create multiple columns at once. We can just keep listing new columns together for our code to create, rather than doing them separately. For instance lets create a column converting height in inches to height in cm by multiplying it by 2.54.</p>
+<p>Mutate also allows us to create multiple columns at once. We can just keep listing new columns together for our code to create, rather than doing them separately. For instance lets create a column converting height in inches to height in cm by multiplying it by 2.54.</p>
 <pre class="r"><code>data1 &lt;-data1%&gt;%
   mutate(&quot;pests_per_inch&quot; = n_pests/height,
          &quot;height_cm&quot; = height*2.54)</code></pre>
-<p>Finally, beyond the scope today, but dplyr comes with other functions such as <code>mutate_at()</code>, <code>mutate_if()</code> and <code>mutate_all()</code> to allow you to perform the same operation to multiple or even all your columns. So there is a lot of variability in what mutate can achieve.</p>
+<p>Dplyr comes with other functions such as <code>mutate_at()</code>, <code>mutate_if()</code> and <code>mutate_all()</code> to allow you to perform the same operation to multiple or even all your columns. So there is a lot of variability in what mutate can achieve.</p>
 </div>
 </div>
 <div id="section-missing-data" class="section level2">
 <h2>Missing Data</h2>
-<p>If you know that your missing data has already been coded in a certain way such as a text sting of for example “na” or something numeric like -8 or -9. Then a quick way of establishing to R that this means that the data is missing can be accomplished through your data import, especially when working with a csv or excel workbook. This is because the functions for reading in that type of data come with an argument to specify the codes used for missing data.</p>
-<p>R deals with missing data in quite a particular way, you need to tell it what is missing in most cases. If you have just left cells blank where there is missing data then this is usually fine as R will understand that this is missing data. It wont automatically understand “na” or -9 as meaning data is missing.It will read that verbatim as what the value is.</p>
+<p>R deals with missing data in quite a particular way, you need to tell it what is missing in most cases. If the values are blank where there is missing data then this is usually fine, R will understand that this is missing data.</p>
+<p>R won’t automatically understand text strings such as “na” or something numeric like -9 as meaning data is missing, it will interpret these as actual values. If missing data has been coded in this way, you can let R know that this means that the data is missing while importing the data from a csv or xlsx file. The functions for reading in these files come with an argument to specify the codes used for missing data.</p>
 <p>In the example below we have told R that cells in our csv that are one of these 3 values are missing data.</p>
 <pre class="r"><code>data1 &lt;- read.csv(&quot;data.csv&quot;, na.strings = c(&quot;na&quot;, -9, -8))</code></pre>
 <p>If you were to do something like this with your data you would notice that those -8s and -9s have become <code>NA</code> instead. This is because R will not keep these missing codes but use its own internal character to mean missing. R will only recognise missing data if it takes the value of <code>NA</code> a special value in R to denote missing data. Note that <code>NA</code> and <code>"NA"</code> are not the same, the former is a special logical value in R and the other is a character string so again R would read <code>"NA"</code> as a literal character string.</p>
@@ -300,15 +317,15 @@ $(document).ready(function () {
 <div id="section-using-summary-and-table" class="section level3">
 <h3>Using summary and table</h3>
 <p>Depending on the state of your missing data, there are 2 key ways we can check individual variables for missing data.</p>
-<p>If your missing data is already coded as <code>NA</code> within R, i.e. R understands it is missing. We can use <code>summary</code> to look at some key summary statistics of that variable. This includes telling you how many are <code>NA</code></p>
-<pre class="r"><code>summary(data1$germination)</code></pre>
-<pre><code>## Length  Class   Mode 
-##      0   NULL   NULL</code></pre>
-<p>Now we don’t see a summary of missing data for this column because there wasn’t any. Let’s look at plot number instead</p>
+<p>If your missing data is already coded as <code>NA</code> within R, i.e. R understands it is missing, use summary to look at some key summary statistics of that variable. This includes how many values are <code>NA</code>.</p>
+<pre class="r"><code>summary(data1$plant)</code></pre>
+<pre><code>##    Length     Class      Mode 
+##        10 character character</code></pre>
+<p>Now we don’t see a summary of missing data for the column plant because there aren’t any. Let’s look at the column plot_num instead.</p>
 <pre class="r"><code>summary(data1$plot_num)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
 ##   1.000   2.000   3.000   3.111   4.000   5.000       1</code></pre>
-<p>Ah this time we get another value telling us the number of <code>NA</code> values in our column. This being 1. If we take another look at our data we can see by looking at plot number we have only 1 plant attached to plot 2 but 2 plants for the other 4 plots. In this basic example we can make the assumption that plant 8 should belong to plot 2 so we can simply overwrite this value with what it should be.</p>
+<p>Ah this time we get another value telling us the number of <code>NA</code> values in our column. This being 1. If we take another look at our data we can see by looking at plot number plot 2 only has 1 plant while plot 1, 3, 4 and 5 all have 2 plants.. In this basic example we can make the assumption that plant 8 should belong to plot 2 so we can simply overwrite this value with what it should be.</p>
 <table>
 <thead>
 <tr class="header">
@@ -329,8 +346,8 @@ $(document).ready(function () {
 <td align="left">Sorghum</td>
 <td align="right">0</td>
 <td align="right">10</td>
-<td align="right">19</td>
-<td align="right">1.9000000</td>
+<td align="right">24</td>
+<td align="right">2.4000000</td>
 <td align="right">25.40</td>
 </tr>
 <tr class="even">
@@ -339,8 +356,8 @@ $(document).ready(function () {
 <td align="left">sorg</td>
 <td align="right">1</td>
 <td align="right">12</td>
-<td align="right">25</td>
-<td align="right">2.0833333</td>
+<td align="right">28</td>
+<td align="right">2.3333333</td>
 <td align="right">30.48</td>
 </tr>
 <tr class="odd">
@@ -349,8 +366,8 @@ $(document).ready(function () {
 <td align="left">Sorghum</td>
 <td align="right">1</td>
 <td align="right">8</td>
-<td align="right">3</td>
-<td align="right">0.3750000</td>
+<td align="right">7</td>
+<td align="right">0.8750000</td>
 <td align="right">20.32</td>
 </tr>
 <tr class="even">
@@ -359,8 +376,8 @@ $(document).ready(function () {
 <td align="left">Maize</td>
 <td align="right">0</td>
 <td align="right">15</td>
-<td align="right">17</td>
-<td align="right">1.1333333</td>
+<td align="right">12</td>
+<td align="right">0.8000000</td>
 <td align="right">38.10</td>
 </tr>
 <tr class="odd">
@@ -369,8 +386,8 @@ $(document).ready(function () {
 <td align="left">M</td>
 <td align="right">1</td>
 <td align="right">12</td>
-<td align="right">27</td>
-<td align="right">2.2500000</td>
+<td align="right">36</td>
+<td align="right">3.0000000</td>
 <td align="right">30.48</td>
 </tr>
 <tr class="even">
@@ -379,8 +396,8 @@ $(document).ready(function () {
 <td align="left">Maize</td>
 <td align="right">-99</td>
 <td align="right">13</td>
-<td align="right">7</td>
-<td align="right">0.5384615</td>
+<td align="right">6</td>
+<td align="right">0.4615385</td>
 <td align="right">33.02</td>
 </tr>
 <tr class="odd">
@@ -389,8 +406,8 @@ $(document).ready(function () {
 <td align="left">Sorghum</td>
 <td align="right">1</td>
 <td align="right">7</td>
-<td align="right">28</td>
-<td align="right">4.0000000</td>
+<td align="right">3</td>
+<td align="right">0.4285714</td>
 <td align="right">17.78</td>
 </tr>
 <tr class="even">
@@ -399,8 +416,8 @@ $(document).ready(function () {
 <td align="left">sorg</td>
 <td align="right">0</td>
 <td align="right">88</td>
-<td align="right">16</td>
-<td align="right">0.1818182</td>
+<td align="right">38</td>
+<td align="right">0.4318182</td>
 <td align="right">223.52</td>
 </tr>
 <tr class="odd">
@@ -409,8 +426,8 @@ $(document).ready(function () {
 <td align="left">M</td>
 <td align="right">0</td>
 <td align="right">10</td>
-<td align="right">2</td>
-<td align="right">0.2000000</td>
+<td align="right">27</td>
+<td align="right">2.7000000</td>
 <td align="right">25.40</td>
 </tr>
 <tr class="even">
@@ -419,13 +436,13 @@ $(document).ready(function () {
 <td align="left">M</td>
 <td align="right">0</td>
 <td align="right">11</td>
-<td align="right">1</td>
-<td align="right">0.0909091</td>
+<td align="right">15</td>
+<td align="right">1.3636364</td>
 <td align="right">27.94</td>
 </tr>
 </tbody>
 </table>
-<p>Other examples may not be so straightforward, if you find some missing data that is unexpected that you may need to either look at the questionnaire or data dictionary to understand the skip patterns to find if it was simply irrelevant and therefore should be missing for this observation. Or you may need to look back at an earlier version of the data to see if there was a missing data code which is not shown because of how R deals with missing data. Of course a lot of the time, missing data is truly missing and nothing needs to be done.</p>
+<p>Other examples may not be so straightforward, if you find some missing data that is unexpected then you may need to either look at the questionnaire or data dictionary to understand the skip patterns to find if it was simply irrelevant and therefore should be missing for this observation. Or you may need to look back at an earlier version of the data to see if there was a missing data code which is not shown because of how R deals with missing data. Of course a lot of the time, missing data is truly missing and nothing needs to be done.</p>
 <p>Alternatively, if your <code>NA</code> values have not yet been established but you have known missing data codes you could use <code>table</code> to look at how many observations in a variable are using one of these codes. Now in our data we have used <code>-99</code> to mean missing in our fertilised variable. So lets have a look at that variable using <code>table</code></p>
 <pre class="r"><code>table(data1$fertilised)</code></pre>
 <pre><code>## 
@@ -437,13 +454,13 @@ $(document).ready(function () {
 <h3>Setting values to NA and replacing NA values</h3>
 <p>Now there are many many ways you can change a value in R. Some we will get onto later in this workbook. But for now lets focus on some ways that specifically deal with missing values.</p>
 <p>Firstly, lets fix plot number. Now there are a few great ways to replace missing data with a new value. If you are editing an exiting column you do need to put quotation marks around its name.</p>
-<p>The first of these works specifically in our case because we only need to fix one value. So what we can do is use assign to save a change to this cell. Now to do this we need to specify exactly what cell we are looking at, we thankfully have a small piece of data so we can see easily it is row 8. Similar to when we made a new variable we write out the column but after it we put the row number in square brackets. This means row 8 of column <code>plot_num</code>. And then we can assign it to be the number 2</p>
+<p>The first of these works specifically in our case because we only need to fix one value. So what we can do is use the assign operator to save a change to this cell. Now to do this we need to specify exactly what cell we are looking at, we thankfully have a small piece of data so we can see easily it is row 8. Similar to when we made a new variable we write out the column but after it we put the row number in square brackets. This means row 8 of column <code>plot_num</code>. And then we can assign it to be the number 2</p>
 <pre class="r"><code>data1$plot_num[8] &lt;- 2</code></pre>
 <p>This is mainly useful when the number of changes you are making are quite small and targeted.</p>
 <p>If you are making lots of the same change, an alternative would be to replace the row number with <code>is.na(data$column_name)</code> this will tell R that in the rows of this column where this is missing data, replace it with this value instead. So the could would look like this.</p>
 <pre class="r"><code>data1$plot_num[is.na(data1$plot_num)] &lt;- 2</code></pre>
 <p><code>is.na</code> is a function that tests whether or not a particular observation is equal to <code>NA</code>.</p>
-<p>The tidyverse offers another alternative that can be used with the mutate function. This is the <code>replace_na</code> function. This replaces a missing value with a specified value. Here i need to first specify the column I am working on and then the new value it should take. Again this is best used when all that missing data should now take the same value. If they need to be different then you will need a more targeted method that may be a little more manual. Such as the first option on this page.</p>
+<p>The tidyverse offers another alternative that can be used with the mutate function. This is the <code>replace_na</code> function. This replaces a missing value with a specified value. Here we need to first specify the column we are working on and then the new value it should take. Again this is best used when all that missing data should now take the same value. If they need to be different then you will need a more targeted method that may be a little more manual. Such as the first option on this page.</p>
 <pre class="r"><code>data1 &lt;- data1%&gt;%
   mutate(plot_num = replace_na(plot_num,2))</code></pre>
 <p>Now there are a few options for doing the reverse.</p>
@@ -469,12 +486,13 @@ $(document).ready(function () {
 <p>For instance, lets use summary to look at our number of insects variable.</p>
 <pre class="r"><code>summary(data1$n_pests)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##     1.0     4.0    16.5    14.5    23.5    28.0</code></pre>
-<p>A minimum of 1 and maximum of 28, seems like a little bit of maybe large range.</p>
+##    3.00    8.25   19.50   19.60   27.75   38.00</code></pre>
+<p>A minimum of 3 and maximum of 38, seems like a little bit of maybe large range.</p>
 <p>Maybe we should look at this variable graphically to see if this seems a little out of place.</p>
 <p>Ordinarily we would recommend using the tidyverse package ggplot2 for plotting your data, and we certainly recommend you do look at this package on your own time if you want to learn more, but for the sake of ease we will just quickly use the base plotting function <code>hist</code> to take a quick look. GGplot2 offers a lot more flexibility in plotting your data and creates a more visually appealing graph. For Stats4SD’s previous videos on this package, please follow this <a href="https://www.youtube.com/watch?v=lbt4BH9Q82E&amp;list=PLK5PktXR1tmM_ISpxwoiXD2SioG3MWNqg">link</a></p>
 <pre class="r"><code>hist(data1$n_pests)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-16-1.png" width="624" /> Seems like based on this plot there is nothing really standing out as implausible. So i think this variable is fine.</p>
+<p><img src="index_files/figure-html/unnamed-chunk-16-1.png" width="624" /></p>
+<p>Based on this plot, nothing is really standing out as implausible.</p>
 <p>Let’s instead look to height of the plant</p>
 <pre class="r"><code>summary(data1$height)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
@@ -482,7 +500,7 @@ $(document).ready(function () {
 <p>Now that is a significant gap in our range. 7 to 88 Inches. Moreover our maximum is 88 while our 75th percentile is only 12.75. That certainty doesn’t seem correct.</p>
 <p>Let’s look at the plot just to be sure</p>
 <pre class="r"><code>hist(data1$height)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-18-1.png" width="624" /> Without a doubt this value of 88 is far too high to be correct. There are 2 possible reasons for this data entry error i think. 1 possibility is that this value is meant to be 8 and the enumerator accidentally put 88 instead. Or perhaps a number like 88 was meant to be a missing code and this was incorrectly entered. In a case like this, it would probably be best to contact either the data manager for any insight, or the enumerator who collected data for this particular observation.</p>
+<p><img src="index_files/figure-html/unnamed-chunk-18-1.png" width="624" /> Without a doubt this value of 88 is far too high to be correct. There are two possible reasons as to why this value has been entered incorrectly.. One possibility is that this value is meant to be 8 and the enumerator accidentally put 88 instead. Or perhaps a number like 88 was meant to be a missing code and this was incorrectly entered. In a case like this, it would probably be best to contact either the data manager for any insight, or the enumerator who collected data for this particular observation.</p>
 <p>For our case let’s assume the first option is true. Sometimes if there is not a concrete explanation you may have to use a bit of your best judgement to decide what to do about this sort of error. Whether it is changing it to a specific value or changing this data to be missing.</p>
 <p>We will see on the next page how we could go about changing this value.</p>
 <p>The above tips work best when dealing with a numeric variable. If you are dealing with something more categorical i would recommend either using <code>table</code> again or perhaps <code>unique</code>. This function will display a list of all the unique values in a column, whether it is numeric, categorical, a date. Any variable type will work</p>
@@ -492,7 +510,7 @@ $(document).ready(function () {
 </div>
 <div id="section-correcting-labels-values" class="section level2">
 <h2>Correcting labels / values</h2>
-<p>On the previous page we saw another 2 important issues in our data</p>
+<p>On the previous page we saw two more issues in our data</p>
 <p>First, we have a data entry error in our height variable.</p>
 <p>Secondly, our plant name variable must have been open text as our labels are not standardised.</p>
 <p>To fix either of these issues we could use some methods we have already seen in regards to missing data, but I want to introduce a couple key functions that can be very useful in recoding your data.<code>ifelse</code> and <code>case_when</code></p>
@@ -503,7 +521,7 @@ $(document).ready(function () {
 <p>In this case we want to change the value if it is equal to 88, and we want it changed to just 8 instead. If height is not 88 then we want it to stay the same. <code>Ifelse</code> can be a very useful function for fixing mistakes and generating new variables for analysis.</p>
 <p><code>case_when</code> works in a similar way as it is about recoding variables.Particularly it is for generating new or editing existing categorical variables.</p>
 <p>Again you provide a condition and a value for if that condition is true, however after each comma you provide a new condition and value. Some of you may be familiar with similar functions in STATA or SPSS. Note that the condition and value is separated by a tilde <code>~</code>. This is R notation to denote a formula. You may be familiar with it if you have done any statistical modelling in R before.</p>
-<p>In the code below we want to change “Sorghum” and “sorg” to both be “Sorghum”. We use this <code>%in%</code> operator to tell R to look to see if the value in the cell matches one of the values in a list that we then provide in the <code>c()</code> or combine function. So R will look for where plant is either “Sorghum” or “sorg”. Then after the tilde we provide that new value we want it to be. We do the same for Maize. If there are any values not covered by your conditions in using case_when, it will be assumed by R that you want these to be NA. So always check that you are thorough in your code.</p>
+<p>In the code below we want to change “Sorghum” and “sorg” to both be “Sorghum”. We use the <code>%in%</code> operator to tell R to look to see if the value in the cell matches one of the values in a list that we then provide in the <code>c()</code> or combine function. So R will look for where plant is either “Sorghum” or “sorg”. Then after the tilde we provide that new value we want it to be. We do the same for Maize. If there are any values not covered by your conditions in using case_when, it will be assumed by R that you want these to be NA. So always check that you are thorough in your code.</p>
 <pre class="r"><code>data1 &lt;- data1%&gt;%
   mutate(plant = case_when(
     plant %in% c(&quot;Sorghum&quot;, &quot;sorg&quot;) ~ &quot;Sorghum&quot;,
@@ -522,56 +540,55 @@ $(document).ready(function () {
 <div id="section-sorting-data" class="section level2">
 <h2>Sorting data</h2>
 <p>Finally we will have a quick look at a couple quick data management tips you may find useful.</p>
-<p>Firstly, while not always necessary, you may find it useful to sort your data based on a variable other than a unique identifier.</p>
-<p>In which case we can use the <code>arrange</code> function. This sorts your data based on one or more variables which you supply as arguments. by default it will do this ascendingly but if you wish to do the opposite you can type the variable into the <code>desc</code> function first.</p>
+<p>While not always necessary, it may be useful to sort data based on a variable other than a unique identifier. To do this, you can use the <code>arrange</code> function. This sorts your data based on one or more variables which you supply as arguments. By default it will do this ascendingly but if you wish to do the opposite you can type the variable into the <code>desc</code> function first</p>
 <p>For instance lets sort on plot number</p>
 <pre class="r"><code>data1 &lt;-data1%&gt;%
   arrange(plot_num)
 
 data1</code></pre>
 <pre><code>##    index plot_num   plant fertilised height n_pests pests_per_inch height_cm
-## 1      1        1 Sorghum          0     10      19     1.90000000     25.40
-## 2      5        1   Maize          1     12      27     2.25000000     30.48
-## 3      2        2 Sorghum          1     12      25     2.08333333     30.48
-## 4      8        2 Sorghum          0      8      16     2.00000000     20.32
-## 5      4        3   Maize          0     15      17     1.13333333     38.10
-## 6      6        3   Maize         NA     13       7     0.53846154     33.02
-## 7      3        4 Sorghum          1      8       3     0.37500000     20.32
-## 8      7        4 Sorghum          1      7      28     4.00000000     17.78
-## 9      9        5   Maize          0     10       2     0.20000000     25.40
-## 10    10        5   Maize          0     11       1     0.09090909     27.94</code></pre>
+## 1      1        1 Sorghum          0     10      24      2.4000000     25.40
+## 2      5        1   Maize          1     12      36      3.0000000     30.48
+## 3      2        2 Sorghum          1     12      28      2.3333333     30.48
+## 4      8        2 Sorghum          0      8      38      4.7500000     20.32
+## 5      4        3   Maize          0     15      12      0.8000000     38.10
+## 6      6        3   Maize         NA     13       6      0.4615385     33.02
+## 7      3        4 Sorghum          1      8       7      0.8750000     20.32
+## 8      7        4 Sorghum          1      7       3      0.4285714     17.78
+## 9      9        5   Maize          0     10      27      2.7000000     25.40
+## 10    10        5   Maize          0     11      15      1.3636364     27.94</code></pre>
 <p>Or in descending order</p>
 <pre class="r"><code>data1 &lt;-data1%&gt;%
   arrange(desc(plot_num))
 
 data1</code></pre>
 <pre><code>##    index plot_num   plant fertilised height n_pests pests_per_inch height_cm
-## 1      9        5   Maize          0     10       2     0.20000000     25.40
-## 2     10        5   Maize          0     11       1     0.09090909     27.94
-## 3      3        4 Sorghum          1      8       3     0.37500000     20.32
-## 4      7        4 Sorghum          1      7      28     4.00000000     17.78
-## 5      4        3   Maize          0     15      17     1.13333333     38.10
-## 6      6        3   Maize         NA     13       7     0.53846154     33.02
-## 7      2        2 Sorghum          1     12      25     2.08333333     30.48
-## 8      8        2 Sorghum          0      8      16     2.00000000     20.32
-## 9      1        1 Sorghum          0     10      19     1.90000000     25.40
-## 10     5        1   Maize          1     12      27     2.25000000     30.48</code></pre>
+## 1      9        5   Maize          0     10      27      2.7000000     25.40
+## 2     10        5   Maize          0     11      15      1.3636364     27.94
+## 3      3        4 Sorghum          1      8       7      0.8750000     20.32
+## 4      7        4 Sorghum          1      7       3      0.4285714     17.78
+## 5      4        3   Maize          0     15      12      0.8000000     38.10
+## 6      6        3   Maize         NA     13       6      0.4615385     33.02
+## 7      2        2 Sorghum          1     12      28      2.3333333     30.48
+## 8      8        2 Sorghum          0      8      38      4.7500000     20.32
+## 9      1        1 Sorghum          0     10      24      2.4000000     25.40
+## 10     5        1   Maize          1     12      36      3.0000000     30.48</code></pre>
 <p>Or lets even order it on both plant first and then plot number</p>
 <pre class="r"><code>data1 &lt;-data1%&gt;%
   arrange(plant,plot_num)
 
 data1</code></pre>
 <pre><code>##    index plot_num   plant fertilised height n_pests pests_per_inch height_cm
-## 1      5        1   Maize          1     12      27     2.25000000     30.48
-## 2      4        3   Maize          0     15      17     1.13333333     38.10
-## 3      6        3   Maize         NA     13       7     0.53846154     33.02
-## 4      9        5   Maize          0     10       2     0.20000000     25.40
-## 5     10        5   Maize          0     11       1     0.09090909     27.94
-## 6      1        1 Sorghum          0     10      19     1.90000000     25.40
-## 7      2        2 Sorghum          1     12      25     2.08333333     30.48
-## 8      8        2 Sorghum          0      8      16     2.00000000     20.32
-## 9      3        4 Sorghum          1      8       3     0.37500000     20.32
-## 10     7        4 Sorghum          1      7      28     4.00000000     17.78</code></pre>
+## 1      5        1   Maize          1     12      36      3.0000000     30.48
+## 2      4        3   Maize          0     15      12      0.8000000     38.10
+## 3      6        3   Maize         NA     13       6      0.4615385     33.02
+## 4      9        5   Maize          0     10      27      2.7000000     25.40
+## 5     10        5   Maize          0     11      15      1.3636364     27.94
+## 6      1        1 Sorghum          0     10      24      2.4000000     25.40
+## 7      2        2 Sorghum          1     12      28      2.3333333     30.48
+## 8      8        2 Sorghum          0      8      38      4.7500000     20.32
+## 9      3        4 Sorghum          1      8       7      0.8750000     20.32
+## 10     7        4 Sorghum          1      7       3      0.4285714     17.78</code></pre>
 </div>
 <div id="section-subsetting-data" class="section level2">
 <h2>Subsetting data</h2>
