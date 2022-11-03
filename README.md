@@ -1,4 +1,4 @@
-# Data Management Course Workbook
+# CCRP Data Management Course Workbook
 
 This repository contains materials for _Cleaning and Checking Data in R_  as part of the Data Management Course for the Collaborative Crop Research Program (CCRP).
  
